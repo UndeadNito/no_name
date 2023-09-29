@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-export type SpinerProps = {} & SVGProps<SVGSVGElement>;
+export type SpinerProps = SVGProps<SVGSVGElement>;
 
 export default function Spiner({ ...props }: SpinerProps) {
   return (

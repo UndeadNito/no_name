@@ -5,10 +5,8 @@ import { api } from '~/utils/api';
 import useSettings from '~/utils/hooks/useSettings';
 import { SettingsFields } from '~/components/settings-context';
 
-import Input from '~/components/input';
 import InputWithError from '~/components/input-with-error';
 import ButtonWithLoading from '~/components/button-with-loading';
-import Spiner from '~/components/spiner';
 
 export default function LogIn() {
   const nameValidator = api.name.validate.useMutation();
