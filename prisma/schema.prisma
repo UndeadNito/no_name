@@ -18,3 +18,20 @@ model Example {
 
     @@index([name])
 }
+
+model Name {
+    name       String    @id
+    lastUsedAt DateTime
+    thoughts   Thought[]
+}
+
+model Thought {
+    id        String   @id @default(uuid())
+    text      String
+    createdAt DateTime @default(now())
+
+    authorId String
+    author   Name   @relation(fields: [authorId], references: [name])
+
+    @@index([createdAt])
+}
