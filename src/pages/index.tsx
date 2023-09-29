@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 
 import useSettings from '~/utils/hooks/useSettings';
 
+import Header from '~/components/header';
+
 import { api } from '~/utils/api';
 
 export default function Home() {
@@ -13,5 +15,9 @@ export default function Home() {
     if (!settings.name || settings.name === '') void router.replace('/login');
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <Header name={settings.name ?? 'no-name'} />
+    </>
+  );
 }

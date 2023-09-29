@@ -31,7 +31,7 @@ export default function LogIn() {
     <div className="flex h-full w-full items-center justify-center">
       <form
         onSubmit={OnSubmit} // eslint-disable-line
-        className="flex h-3/5 w-2/5 flex-col items-center justify-around gap-2 rounded-lg border border-[--bor-m] bg-black bg-opacity-10 px-32 py-16 backdrop-blur-2xl"
+        className="flex h-3/5 w-2/5 flex-col items-center justify-around gap-2 rounded-lg border border-[--bor-m] bg-black bg-opacity-10 px-8 py-16 backdrop-blur-2xl lg:px-32"
       >
         <span className="w-max cursor-default text-2xl text-[--fnt-m]">
           Name yourself
