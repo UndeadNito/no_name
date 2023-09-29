@@ -9,7 +9,7 @@
 html{
     --bor-m: #FFFFFF33;
     --fnt-m: rgb(229 231 235 / var(--tw-text-opacity, 1));
-    --bg-m: #103957;
+    --bg-m: rgb(16 57 87 / var(--tw-bg-opacity, 1));
     --bg-s: #00000033;
 }
 

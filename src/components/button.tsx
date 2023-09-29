@@ -12,7 +12,7 @@ export default function Button({
 
   return (
     <button
-      className={`rounded-md border border-[--bor-m] bg-[--bg-s] px-8 py-1 text-gray-200 ${additionalStyles} ${className}`}
+      className={`border-borderMain rounded-md border bg-[--bg-s] px-8 py-1 text-gray-200 ${additionalStyles} ${className}`}
       disabled={disabled}
       {...props}
     >

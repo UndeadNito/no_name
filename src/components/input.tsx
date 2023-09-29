@@ -47,7 +47,7 @@ export default function Input({
       )}
       <input
         type="text"
-        className={`h-10 rounded-md border border-[--bor-m] bg-[--bg-m] bg-opacity-50 px-2 text-gray-200 duration-500 hover:border-gray-400 focus-visible:border-gray-400 focus-visible:outline-none`}
+        className={`bg-backgroundMain border-borderMain h-10 rounded-md border bg-opacity-20 px-2 text-gray-200 duration-500 hover:border-gray-400 focus-visible:border-gray-400 focus-visible:outline-none`}
         placeholder={animate ? undefined : placeholder}
         onChange={(e) => dispatch(e.currentTarget.value)}
         {...props}

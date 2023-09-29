@@ -10,7 +10,7 @@ export type HeaderProps = {
 
 export default function Header({ name }: HeaderProps) {
   return (
-    <div className="relative flex h-16 w-full items-center border-b border-b-[--bor-m] bg-transparent px-4 ">
+    <div className="border-b-borderMain relative flex h-16 w-full items-center border-b bg-transparent px-4 ">
       <pre className="text-2xl text-gray-200">
         NO-NAME stream your mind to the world where nobody know your name
       </pre>
@@ -35,7 +35,7 @@ export default function Header({ name }: HeaderProps) {
       ></div>
       <Link
         href="/login"
-        className="absolute right-0 flex h-full cursor-pointer items-center border-l-2 border-l-[--bor-m] px-8 text-2xl text-gray-200"
+        className="border-l-borderMain absolute right-0 flex h-full cursor-pointer items-center border-l-2 px-8 text-2xl text-gray-200"
       >
         <span suppressHydrationWarning>{name}</span>
       </Link>
