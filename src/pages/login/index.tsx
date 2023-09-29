@@ -1,5 +1,5 @@
-import { FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import type { FormEvent } from 'react';
+import { useRouter } from 'next/router';
 import { api } from '~/utils/api';
 
 import useSettings from '~/utils/hooks/useSettings';
@@ -11,7 +11,7 @@ import ButtonWithLoading from '~/components/button-with-loading';
 export default function LogIn() {
   const nameValidator = api.name.validate.useMutation();
   const router = useRouter();
-  const [settings, setSettings] = useSettings();
+  const [_, setSettings] = useSettings();
 
   const OnSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,14 +23,14 @@ export default function LogIn() {
         return { ...current, name: formData.get('name') as string };
       }, SettingsFields.NAME);
 
-      router.push('/');
+      await router.push('/');
     } catch {}
   };
 
   return (
     <div className="flex h-full w-full items-center justify-center">
       <form
-        onSubmit={OnSubmit}
+        onSubmit={OnSubmit} // eslint-disable-line
         className="flex h-3/5 w-2/5 flex-col items-center justify-around gap-2 rounded-lg border border-[--bor-m] bg-black bg-opacity-10 px-32 py-16 backdrop-blur-2xl"
       >
         <span className="w-max cursor-default text-2xl text-[--fnt-m]">

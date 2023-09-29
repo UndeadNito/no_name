@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useReducer } from "react";
+import { type InputHTMLAttributes, useReducer } from 'react';
 
 export type InputProps = {
   animate?: boolean;
@@ -29,17 +29,17 @@ export default function Input({
   return (
     <div
       className={`input_wrapper flex flex-col ${
-        animate ? "pt-6" : ""
-      } relative ${className || ""}`}
+        animate ? 'pt-6' : ''
+      } relative ${className ?? ''}`}
     >
       {animate && (
         <span
           className={`input_placeholder ${
             animatePlaceholder !== InputState.Initial
               ? animatePlaceholder === InputState.Active
-                ? "animate"
-                : "deanimate"
-              : ""
+                ? 'animate'
+                : 'deanimate'
+              : ''
           } absolute left-2 top-8 text-gray-200 text-opacity-50`}
         >
           {placeholder}

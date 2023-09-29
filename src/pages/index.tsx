@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!settings.name || settings.name === '') router.replace('/login');
+    if (!settings.name || settings.name === '') void router.replace('/login');
   }, []);
 
   return <></>;

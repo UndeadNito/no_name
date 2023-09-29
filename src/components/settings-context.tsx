@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren, createContext, useState } from 'react';
+import { type PropsWithChildren, createContext, useState } from 'react';
 
 export type Settings = {
   name?: string;
@@ -36,8 +36,10 @@ const SettingsInit = (): Settings => {
   const subscribesString = localStorage.getItem(SettingsFields.SUBSCRIBES);
 
   return {
-    name: nameString || undefined,
-    subscribes: subscribesString ? JSON.parse(subscribesString) : undefined,
+    name: nameString ?? undefined,
+    subscribes: subscribesString
+      ? (JSON.parse(subscribesString) as string[])
+      : undefined,
   };
 };
 
@@ -52,11 +54,11 @@ const SettingsProviderStateController = (): SettingsState => {
     switch (reason) {
       default:
       case SettingsFields.NAME: {
-        updateName(updateResult.name || '');
+        updateName(updateResult.name ?? '');
         if (reason) break;
       }
       case SettingsFields.SUBSCRIBES: {
-        updateSubscribes(updateResult.subscribes || []);
+        updateSubscribes(updateResult.subscribes ?? []);
         if (reason) break;
       }
     }
@@ -75,4 +77,4 @@ const updateSubscribes = (subscribes: string[]) => {
   localStorage.setItem(SettingsFields.SUBSCRIBES, JSON.stringify(subscribes));
 };
 
-export const SettingsContext = createContext<SettingsState>([{}, () => {}]);
+export const SettingsContext = createContext<SettingsState>([{}, () => {}]); // eslint-disable-line

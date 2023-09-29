@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import Button, { type ButtonProps } from './button';
 import Spiner from './spiner';
