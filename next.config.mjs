@@ -4,6 +4,7 @@
  */
 await import("./src/env.mjs");
 
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -17,6 +18,29 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  
+  webpack(/** @type {import("webpack").Configuration}*/config) {
+    config?.module?.rules?.push(
+      {
+        test: /\.svg$/i,
+        issuer: { and: [/\.(js|ts)x?$/] },
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: { 
+              exportType: 'named',
+            },
+          },
+        ],
+      },
+    )
+
+    return config
+  }
 };
+
+
+
 
 export default config;

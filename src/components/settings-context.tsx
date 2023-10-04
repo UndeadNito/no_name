@@ -1,6 +1,11 @@
 'use client';
 
-import { type PropsWithChildren, createContext, useState } from 'react';
+import {
+  type PropsWithChildren,
+  createContext,
+  useState,
+  useEffect,
+} from 'react';
 
 export type Settings = {
   name?: string;
@@ -18,33 +23,13 @@ export enum SettingsFields {
 }
 
 export default function SettingsProvider({ children }: PropsWithChildren) {
-  //otherwise it will try to render on server and throw
-  try {
-    window;
-  } catch {
-    return children;
-  }
-  return (
-    <SettingsContext.Provider value={SettingsProviderStateController()}>
-      {children}
-    </SettingsContext.Provider>
-  );
-}
+  const [settings, setSettings] = useState<Settings>({});
 
-const SettingsInit = (): Settings => {
-  const nameString = localStorage.getItem(SettingsFields.NAME);
-  const subscribesString = localStorage.getItem(SettingsFields.SUBSCRIBES);
-
-  return {
-    name: nameString ?? undefined,
-    subscribes: subscribesString
-      ? (JSON.parse(subscribesString) as string[])
-      : undefined,
-  };
-};
-
-const SettingsProviderStateController = (): SettingsState => {
-  const [settings, setSettings] = useState(SettingsInit());
+  useEffect(() => {
+    setSettings(() => {
+      return SettingsInit();
+    });
+  }, []);
 
   const Dispatch = (
     setter: (current: Settings) => Settings,
@@ -66,7 +51,23 @@ const SettingsProviderStateController = (): SettingsState => {
     setSettings(updateResult);
   };
 
-  return [settings, Dispatch];
+  return (
+    <SettingsContext.Provider value={[settings, Dispatch]}>
+      {children}
+    </SettingsContext.Provider>
+  );
+}
+
+const SettingsInit = (): Settings => {
+  const nameString = localStorage.getItem(SettingsFields.NAME);
+  const subscribesString = localStorage.getItem(SettingsFields.SUBSCRIBES);
+
+  return {
+    name: nameString ?? undefined,
+    subscribes: subscribesString
+      ? (JSON.parse(subscribesString) as string[])
+      : undefined,
+  };
 };
 
 const updateName = (name: string) => {

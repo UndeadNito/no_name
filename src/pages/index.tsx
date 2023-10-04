@@ -1,23 +1,42 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { Suspense } from 'react';
 
 import useSettings from '~/utils/hooks/useSettings';
-
-import Header from '~/components/header';
-
 import { api } from '~/utils/api';
 
-export default function Home() {
-  const [settings, setSettings] = useSettings();
-  const router = useRouter();
+import { MenuLayout } from '~/components/layout';
+import InfiniteScrollFeed from '~/components/infinite-scroll-feed';
+import WritePost from '~/components/write-post';
+import Spiner from '~/components/spiner';
 
-  useEffect(() => {
-    if (!settings.name || settings.name === '') void router.replace('/login');
-  }, []);
+export default function Home() {
+  const [settings, _] = useSettings();
+  const newPostMutation = api.posts.makePost.useMutation();
+
+  const OnNewPost = async (text: string) => {
+    await newPostMutation.mutateAsync({
+      name: settings.name ?? 'no-name',
+      text: text,
+    });
+    //refetch posts
+  };
 
   return (
-    <>
-      <Header name={settings.name ?? 'no-name'} />
-    </>
+    <MenuLayout>
+      <WritePost
+        userName={settings.name ?? 'no-name'}
+        className="w-full"
+        placeholder="Something in mind?"
+        onNewPost={OnNewPost} //eslint-disable-line
+      />
+      <Suspense
+        fallback={
+          <div className='flex-grow" w-full'>
+            <Spiner />
+          </div>
+        }
+      >
+        <InfiniteScrollFeed className="w-full flex-grow" />
+      </Suspense>
+    </MenuLayout>
   );
 }

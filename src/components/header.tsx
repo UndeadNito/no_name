@@ -1,16 +1,21 @@
 'use client';
 
-import { CSSProperties } from 'react';
+import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react';
 
 import Link from 'next/link';
 
 export type HeaderProps = {
   name: string;
-};
+} & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-export default function Header({ name }: HeaderProps) {
+export default function Header({ name, className, ...props }: HeaderProps) {
   return (
-    <div className="border-b-borderMain relative flex h-16 w-full items-center border-b bg-transparent px-4 ">
+    <div
+      className={`relative flex h-16 w-full items-center border-b border-b-borderMain bg-transparent px-4 ${
+        className ?? ''
+      }`}
+      {...props}
+    >
       <pre className="text-2xl text-gray-200">
         NO-NAME stream your mind to the world where nobody know your name
       </pre>
@@ -35,9 +40,9 @@ export default function Header({ name }: HeaderProps) {
       ></div>
       <Link
         href="/login"
-        className="border-l-borderMain absolute right-0 flex h-full cursor-pointer items-center border-l-2 px-8 text-2xl text-gray-200"
+        className="absolute right-0 flex h-full cursor-pointer items-center border-l-2 border-l-borderMain px-8 text-2xl text-gray-200 backdrop-blur-sm"
       >
-        <span suppressHydrationWarning>{name}</span>
+        <span>{name}</span>
       </Link>
     </div>
   );
