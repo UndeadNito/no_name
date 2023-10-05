@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export default function useOnScreen(): [
   boolean,
@@ -6,6 +6,7 @@ export default function useOnScreen(): [
 ] {
   const [isIntersecting, setIntersecting] = useState(false);
   const [observer, setObserver] = useState<IntersectionObserver>();
+  const node = useRef<HTMLElement>();
 
   useEffect(() => {
     setObserver(
@@ -13,11 +14,20 @@ export default function useOnScreen(): [
         if (entry) setIntersecting(entry.isIntersecting);
       }),
     );
+    return () => observer?.disconnect();
   }, []);
 
   const intersectSetter: (node: HTMLElement | null) => void = useCallback(
-    (node) => {
-      if (node && observer) observer.observe(node);
+    (newNode) => {
+      if (newNode === null) return;
+      if (newNode === node.current) return;
+
+      if (node.current) {
+        observer?.unobserve(node.current);
+      }
+
+      node.current = newNode;
+      observer?.observe(newNode);
     },
     [observer],
   );

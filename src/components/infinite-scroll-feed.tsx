@@ -1,5 +1,5 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import useSettings from '~/utils/hooks/useSettings';
 import useOnScreen from '~/utils/hooks/use-on-screen';
@@ -13,10 +13,12 @@ const LOAD_THEN_X_POSTS_LEFT = 2;
 
 export type FeedProps = {
   name?: string;
+  updateKey?: string;
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export default function InfiniteScrollFeed({
   name,
+  updateKey,
   className,
   ...props
 }: FeedProps) {
@@ -27,10 +29,21 @@ export default function InfiniteScrollFeed({
   const posts = api.posts.getPosts.useInfiniteQuery(
     { name: name },
     {
+      refetchOnWindowFocus: false,
       getNextPageParam: (lastPage) => lastPage.at(-1)?.id,
       initialCursor: null,
     },
   );
+
+  useEffect(() => {
+    void posts.refetch();
+  }, [updateKey]);
+
+  useEffect(() => {
+    if (loaderOnScreen && !posts.isFetching && posts.hasNextPage) {
+      void posts.fetchNextPage();
+    }
+  }, [loaderOnScreen]);
 
   const OnSubscribeClick = (name: string) => {
     setSettings((current) => {
@@ -46,15 +59,6 @@ export default function InfiniteScrollFeed({
       };
     }, SettingsFields.SUBSCRIBES);
   };
-
-  if (loaderOnScreen && !posts.isLoading && posts.hasNextPage) {
-    console.log('loader on screen');
-    void posts.fetchNextPage();
-  }
-
-  if (loaderOnScreen) {
-    console.log('loader on screen');
-  }
 
   return (
     <div
@@ -85,7 +89,7 @@ export default function InfiniteScrollFeed({
         );
       })}
       {loaderOnScreen && posts.hasNextPage ? (
-        <div>
+        <div className="flex w-full justify-center py-4">
           <Spiner />
         </div>
       ) : null}

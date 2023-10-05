@@ -34,26 +34,6 @@ export const posts = createTRPCRouter({
         },
       });
     }),
-  getNamedPosts: publicProcedure
-    .input(z.object({ name: nameRules }))
-    .query(async ({ ctx, input }) => {
-      return await ctx.db.thought.findMany({
-        where: {
-          author: {
-            name: {
-              equals: input.name,
-            },
-          },
-        },
-        take: 10,
-        include: {
-          author: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
-    }),
   makePost: publicProcedure
     .input(z.object({ name: nameRules, text: z.string().min(1).max(400) }))
     .mutation(async ({ ctx, input }) => {
@@ -70,12 +50,15 @@ export const posts = createTRPCRouter({
           name: input.name,
         },
       });
-      await ctx.db.thought.create({
+      return await ctx.db.thought.create({
         data: {
           text: input.text,
           author: {
             connect: author,
           },
+        },
+        include: {
+          author: true,
         },
       });
     }),

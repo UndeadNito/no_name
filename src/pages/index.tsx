@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 import useSettings from '~/utils/hooks/useSettings';
 import { api } from '~/utils/api';
@@ -17,7 +17,6 @@ export default function Home() {
       name: settings.name ?? 'no-name',
       text: text,
     });
-    //refetch posts
   };
 
   return (
@@ -35,7 +34,10 @@ export default function Home() {
           </div>
         }
       >
-        <InfiniteScrollFeed className="w-full flex-grow" />
+        <InfiniteScrollFeed
+          updateKey={newPostMutation.data?.id}
+          className="w-full flex-grow"
+        />
       </Suspense>
     </MenuLayout>
   );
