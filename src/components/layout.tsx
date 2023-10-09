@@ -9,6 +9,7 @@ import { SettingsFields } from './settings-context';
 
 import Header from './header';
 import SubscribesMenu from './subscribes-menu';
+import FeedMenu from './feed-menu';
 
 export default function HeaderLayout({
   children,
@@ -67,6 +68,43 @@ export function MenuLayout({
         {children}
       </div>
       <div className="w-1/6"></div>
+    </HeaderLayout>
+  );
+}
+
+export function DoubleMenuLayout({
+  children,
+  className,
+  ...props
+}: PropsWithChildren<
+  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>) {
+  const [settings, setSettings] = useSettings();
+
+  const OnUnSubscribe = (name: string) => {
+    setSettings((current) => {
+      return {
+        ...current,
+        subscribes: current.subscribes?.filter((item) => item !== name),
+      };
+    }, SettingsFields.SUBSCRIBES);
+  };
+
+  return (
+    <HeaderLayout>
+      <SubscribesMenu
+        subscribes={settings.subscribes ?? []}
+        className="h-full w-1/6"
+        onSubscribeDelete={OnUnSubscribe}
+        suppressHydrationWarning
+      />
+      <div
+        className={`flex h-full flex-grow flex-col gap-1 ${className ?? ''}`}
+        {...props}
+      >
+        {children}
+      </div>
+      <FeedMenu className="w-1/6" />
     </HeaderLayout>
   );
 }

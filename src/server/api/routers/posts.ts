@@ -6,7 +6,10 @@ import { nameRules } from '~/utils/validator';
 export const posts = createTRPCRouter({
   getPosts: publicProcedure
     .input(
-      z.object({ cursor: z.string().nullable(), name: nameRules.optional() }),
+      z.object({
+        cursor: z.string().nullable(),
+        names: nameRules.array().optional(),
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await ctx.db.thought.findMany({
@@ -17,11 +20,11 @@ export const posts = createTRPCRouter({
               id: input.cursor,
             }
           : undefined,
-        where: input.name
+        where: input.names
           ? {
               author: {
                 name: {
-                  equals: input.name,
+                  in: input.names,
                 },
               },
             }

@@ -29,7 +29,7 @@ export default function SubscribesMenu({
 
   return (
     <div
-      className={`subscribes_wrapper flex min-w-min flex-col gap-4 overflow-hidden rounded-tr-lg border-r border-t border-r-borderMain border-t-borderMain  px-4 py-2 backdrop-blur ${
+      className={`subscribes_wrapper flex min-w-min flex-col gap-4 overflow-hidden rounded-tr-lg border-r border-t border-r-borderMain border-t-borderMain px-4 py-2 backdrop-blur ${
         className ?? ''
       }`}
       {...props}
@@ -44,7 +44,7 @@ export default function SubscribesMenu({
             <Link
               href={`/name/${subscribe}`}
               key={subscribe}
-              className="group flex w-full cursor-pointer flex-row items-center justify-between rounded-sm px-2 py-1 pt-1 text-fontMain duration-200 hover:bg-slate-800 focus-visible:bg-slate-800"
+              className="text-fontHighlight group flex w-full cursor-pointer flex-row items-center justify-between rounded-sm px-2 py-1 pt-1 duration-200 hover:bg-slate-800 focus-visible:bg-slate-800"
             >
               <Close
                 className="h-4 text-fontMain opacity-0 duration-200 group-hover:opacity-80 group-focus-visible:opacity-80"

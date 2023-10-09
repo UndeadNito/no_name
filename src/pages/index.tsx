@@ -1,12 +1,9 @@
-import { Suspense, useState } from 'react';
-
 import useSettings from '~/utils/hooks/useSettings';
 import { api } from '~/utils/api';
 
-import { MenuLayout } from '~/components/layout';
+import { DoubleMenuLayout } from '~/components/layout';
 import InfiniteScrollFeed from '~/components/infinite-scroll-feed';
 import WritePost from '~/components/write-post';
-import Spiner from '~/components/spiner';
 
 export default function Home() {
   const [settings, _] = useSettings();
@@ -20,25 +17,18 @@ export default function Home() {
   };
 
   return (
-    <MenuLayout>
+    <DoubleMenuLayout>
       <WritePost
         userName={settings.name ?? 'no-name'}
         className="w-full"
         placeholder="Something in mind?"
         onNewPost={OnNewPost} //eslint-disable-line
       />
-      <Suspense
-        fallback={
-          <div className='flex-grow" w-full'>
-            <Spiner />
-          </div>
-        }
-      >
-        <InfiniteScrollFeed
-          updateKey={newPostMutation.data?.id}
-          className="w-full flex-grow"
-        />
-      </Suspense>
-    </MenuLayout>
+      <InfiniteScrollFeed
+        names={settings.feedState === 'all' ? undefined : settings.subscribes}
+        updateKey={newPostMutation.data?.id}
+        className="w-full flex-grow"
+      />
+    </DoubleMenuLayout>
   );
 }

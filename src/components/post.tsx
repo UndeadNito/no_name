@@ -33,7 +33,10 @@ export default function Post({
       className={`flex flex-col gap-2 text-fontMain ${className ?? ''}`}
     >
       <div className="group flex w-max flex-row items-center gap-2">
-        <Link href={`/name/${post.author.name}`} className="pl-4">
+        <Link
+          href={`/name/${post.author.name}`}
+          className="text-fontHighlight pl-4"
+        >
           {post.author.name}
         </Link>
         <Bookmark

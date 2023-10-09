@@ -10,17 +10,19 @@ import {
 export type Settings = {
   name?: string;
   subscribes?: string[];
+  feedState?: 'all' | 'subs';
 };
+
+export enum SettingsFields {
+  NAME = 'name',
+  SUBSCRIBES = 'subscribes',
+  FEED_STATE = 'feedState',
+}
 
 export type SettingsState = [
   Settings,
   (setter: (current: Settings) => Settings, reason?: SettingsFields) => void,
 ];
-
-export enum SettingsFields {
-  NAME = 'name',
-  SUBSCRIBES = 'subscribes',
-}
 
 export default function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, setSettings] = useState<Settings>({});
@@ -35,20 +37,17 @@ export default function SettingsProvider({ children }: PropsWithChildren) {
     setter: (current: Settings) => Settings,
     reason?: SettingsFields,
   ) => {
-    const updateResult = setter(settings);
-    switch (reason) {
-      default:
-      case SettingsFields.NAME: {
-        updateName(updateResult.name ?? '');
-        if (reason) break;
-      }
-      case SettingsFields.SUBSCRIBES: {
-        updateSubscribes(updateResult.subscribes ?? []);
-        if (reason) break;
-      }
-    }
+    setSettings((current) => {
+      const newValue = setter(current);
 
-    setSettings(updateResult);
+      if (reason) {
+        updateField(reason, JSON.stringify(newValue[reason]));
+      } else {
+        updateAll(newValue);
+      }
+
+      return newValue;
+    });
   };
 
   return (
@@ -59,23 +58,34 @@ export default function SettingsProvider({ children }: PropsWithChildren) {
 }
 
 const SettingsInit = (): Settings => {
-  const nameString = localStorage.getItem(SettingsFields.NAME);
-  const subscribesString = localStorage.getItem(SettingsFields.SUBSCRIBES);
+  const result: Settings = {};
+  Object.values(SettingsFields).forEach((keyV) => {
+    // eslint-disable-next-line
+    result[keyV as keyof Settings] = JSON.parse(
+      localStorage.getItem(keyV) ?? '{}',
+    );
+  });
 
-  return {
-    name: nameString ?? undefined,
-    subscribes: subscribesString
-      ? (JSON.parse(subscribesString) as string[])
-      : undefined,
-  };
+  return result;
 };
 
-const updateName = (name: string) => {
-  localStorage.setItem(SettingsFields.NAME, name);
+const updateAll = (value: Settings) => {
+  Object.keys(SettingsFields).forEach((key) => {
+    const keyValue = value[key as keyof Settings];
+
+    if (keyValue === undefined) return;
+
+    updateField(key as SettingsFields, JSON.stringify(keyValue));
+  });
 };
 
-const updateSubscribes = (subscribes: string[]) => {
-  localStorage.setItem(SettingsFields.SUBSCRIBES, JSON.stringify(subscribes));
+const updateField = (field: SettingsFields, value: string) => {
+  localStorage.setItem(field, value);
 };
 
-export const SettingsContext = createContext<SettingsState>([{}, () => {}]); // eslint-disable-line
+export const SettingsContext = createContext<SettingsState>([
+  {},
+  () => {
+    return;
+  },
+]);

@@ -40,7 +40,7 @@ export default function Header({ name, className, ...props }: HeaderProps) {
       ></div>
       <Link
         href="/login"
-        className="absolute right-0 flex h-full cursor-pointer items-center border-l-2 border-l-borderMain px-8 text-2xl text-gray-200 backdrop-blur-sm"
+        className="text-fontHighlight absolute right-0 flex h-full cursor-pointer items-center border-l-2 border-l-borderMain px-8 text-2xl backdrop-blur-sm"
       >
         <span>{name}</span>
       </Link>

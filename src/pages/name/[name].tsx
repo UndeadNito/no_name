@@ -11,7 +11,7 @@ export default function UserPage() {
   return (
     <MenuLayout className="relative">
       <InfiniteScrollFeed
-        name={router.query.name as string}
+        names={[router.query.name as string]}
         className="w-full flex-grow rounded-t-lg"
       />
       <Arrow

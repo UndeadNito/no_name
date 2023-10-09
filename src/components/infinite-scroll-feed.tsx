@@ -12,12 +12,12 @@ import Post from './post';
 const LOAD_THEN_X_POSTS_LEFT = 2;
 
 export type FeedProps = {
-  name?: string;
+  names?: string[];
   updateKey?: string;
 } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export default function InfiniteScrollFeed({
-  name,
+  names,
   updateKey,
   className,
   ...props
@@ -27,7 +27,7 @@ export default function InfiniteScrollFeed({
   const [loaderOnScreen, setLoader] = useOnScreen();
 
   const posts = api.posts.getPosts.useInfiniteQuery(
-    { name: name },
+    { names: names },
     {
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage) => lastPage.at(-1)?.id,

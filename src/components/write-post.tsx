@@ -43,7 +43,7 @@ export default function WritePost({
       }`}
     >
       <div className="flex flex-row items-end justify-between pl-4">
-        <span className="text-fontMain">{userName}</span>
+        <span className="text-fontHighlight">{userName}</span>
         <Button type="submit">Share</Button>
       </div>
       <textarea
