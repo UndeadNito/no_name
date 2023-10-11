@@ -25,7 +25,7 @@ export default function Home() {
         onNewPost={OnNewPost} //eslint-disable-line
       />
       <InfiniteScrollFeed
-        names={settings.feedState === 'all' ? undefined : settings.subscribes}
+        names={settings.feedState === 'subs' ? settings.subscribes : undefined}
         updateKey={newPostMutation.data?.id}
         className="w-full flex-grow"
       />

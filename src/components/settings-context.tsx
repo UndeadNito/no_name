@@ -57,17 +57,26 @@ export default function SettingsProvider({ children }: PropsWithChildren) {
   );
 }
 
+/* eslint-disable */
 const SettingsInit = (): Settings => {
   const result: Settings = {};
-  Object.values(SettingsFields).forEach((keyV) => {
-    // eslint-disable-next-line
-    result[keyV as keyof Settings] = JSON.parse(
-      localStorage.getItem(keyV) ?? '{}',
-    );
+  Object.values(SettingsFields).forEach((settingsValueName) => {
+    const settingsValue = localStorage.getItem(settingsValueName);
+    let settingsObject: any;
+
+    if (settingsValue !== null) {
+      try {
+        settingsObject = JSON.parse(settingsValue);
+      } catch {}
+
+      result[settingsValueName as keyof Settings] =
+        settingsObject ?? settingsValue;
+    }
   });
 
   return result;
 };
+/* eslint-enable */
 
 const updateAll = (value: Settings) => {
   Object.keys(SettingsFields).forEach((key) => {
